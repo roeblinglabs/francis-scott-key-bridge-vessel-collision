@@ -123,7 +123,7 @@ with col1:
         tiles=None  # Start with no tiles, add custom layers below
     )
 
-    # Add OpenStreetMap as base layer (required for OpenSeaMap overlay)
+    # Add OpenStreetMap as base layer
     folium.TileLayer(
         tiles='https://tile.openstreetmap.org/{z}/{x}/{y}.png',
         attr='© OpenStreetMap contributors',
@@ -132,11 +132,20 @@ with col1:
         control=True
     ).add_to(m)
 
-    # Add OpenSeaMap nautical chart overlay
+    # Add NOAA nautical charts as alternative base layer
+    folium.TileLayer(
+        tiles='https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png',
+        attr='© NOAA',
+        name='NOAA Nautical Charts',
+        overlay=False,
+        control=True
+    ).add_to(m)
+
+    # Add OpenSeaMap nautical chart overlay (works on top of any base layer)
     folium.TileLayer(
         tiles='https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
         attr='© OpenSeaMap contributors',
-        name='OpenSeaMap Nautical',
+        name='OpenSeaMap Overlay',
         overlay=True,
         control=True
     ).add_to(m)
