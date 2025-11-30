@@ -116,11 +116,33 @@ with col1:
     st.subheader("📍 Map of Bridge, Piers, Vessels, and Trajectories")
     
     # Create map centered on Francis Scott Key Bridge
+    # Use OpenSeaMap nautical charts as the base layer
     m = folium.Map(
         location=[BRIDGE_LAT, BRIDGE_LON],
         zoom_start=10,
-        tiles='OpenStreetMap'
+        tiles=None  # Start with no tiles, add custom layers below
     )
+
+    # Add OpenStreetMap as base layer (required for OpenSeaMap overlay)
+    folium.TileLayer(
+        tiles='https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attr='© OpenStreetMap contributors',
+        name='OpenStreetMap',
+        overlay=False,
+        control=True
+    ).add_to(m)
+
+    # Add OpenSeaMap nautical chart overlay
+    folium.TileLayer(
+        tiles='https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
+        attr='© OpenSeaMap contributors',
+        name='OpenSeaMap Nautical',
+        overlay=True,
+        control=True
+    ).add_to(m)
+
+    # Add layer control to toggle between map layers
+    folium.LayerControl().add_to(m)
     
     # Add Francis Scott Key Bridge marker (BLUE - infrastructure)
     folium.Marker(
